@@ -173,7 +173,7 @@ def _generate_display_name_from_model(model_name: str) -> str:
         words = cleaned.split()
         result_words = []
         for word in words:
-            if word.isdigit() or re.match(r"^\d+\.?\d*$", word):
+            if word.isdigit() or re.match(r"^[0-9]+(?:\.[0-9]*)?$", word):
                 # Keep numbers as-is
                 result_words.append(word)
             elif word.lower() in ("pro", "lite", "mini", "flash", "preview", "ultra"):

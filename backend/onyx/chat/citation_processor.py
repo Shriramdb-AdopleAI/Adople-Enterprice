@@ -191,7 +191,7 @@ class DynamicCitationProcessor:
         # Citation patterns
         # Matches potential incomplete citations: '[', '[[', '[1', '[[1', '[1,', '[1, ', etc.
         # Also matches unicode bracket variants: 【, ［
-        self.possible_citation_pattern = re.compile(r"([\[【［]+(?:\d+,? ?)*$)")
+        self.possible_citation_pattern = re.compile(r"([\[【［]+[0-9, ]*$)")
 
         # Matches complete citations:
         # group 1: '[[1]]', [[2]], etc. (also matches 【【1】】, ［［1］］, 【1】, ［1］)

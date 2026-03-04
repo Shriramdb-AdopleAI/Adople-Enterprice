@@ -258,7 +258,7 @@ def list_all_users(
 
     if q:
         invited_emails = [
-            email for email in invited_emails if re.search(r"{}".format(q), email, re.I)
+            email for email in invited_emails if re.search(re.escape(q), email, re.I)
         ]
 
     accepted_count = len(accepted_emails)

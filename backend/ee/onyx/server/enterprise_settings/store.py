@@ -115,7 +115,7 @@ def upload_logo(file: UploadFile | str, is_logotype: bool = False) -> bool:
             logger.error(f"Invalid path: {file}")
             return False
 
-        with open(file, "rb") as file_handle:
+        with open(normalized_path, "rb") as file_handle:
             file_content = file_handle.read()
         content = BytesIO(file_content)
         display_name = file

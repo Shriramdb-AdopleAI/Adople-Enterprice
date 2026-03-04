@@ -152,8 +152,9 @@ class LocalSandboxManager(SandboxManager):
         # Ensure ID doesn't contain path traversal components
         safe_id = str(sandbox_id)
         if ".." in safe_id or "/" in safe_id or "\\" in safe_id:
-            logger.error(f"Malicious sandbox_id detected: {sandbox_id}")
-            raise ValueError(f"Invalid sandbox_id: {sandbox_id}")
+            masked_id = f"{safe_id[:8]}..." if len(safe_id) > 8 else "***"
+            logger.error(f"Malicious sandbox_id detected: {masked_id}")
+            raise ValueError(f"Invalid sandbox_id: {safe_id}")
 
         return Path(SANDBOX_BASE_PATH) / safe_id
 
@@ -170,8 +171,9 @@ class LocalSandboxManager(SandboxManager):
         # Ensure session_id doesn't contain path traversal components
         safe_session_id = str(session_id)
         if ".." in safe_session_id or "/" in safe_session_id or "\\" in safe_session_id:
-            logger.error(f"Malicious session_id detected: {session_id}")
-            raise ValueError(f"Invalid session_id: {session_id}")
+            masked_session_id = f"{safe_session_id[:8]}..." if len(safe_session_id) > 8 else "***"
+            logger.error(f"Malicious session_id detected: {masked_session_id}")
+            raise ValueError(f"Invalid session_id: {safe_session_id}")
 
         return self._get_sandbox_path(sandbox_id) / "sessions" / safe_session_id
 

@@ -152,7 +152,7 @@ def onyx_redis(
         result = r.lrange(
             "0097a564-d343-3c1f-9fd1-af8cce038115.reply.celery.pidbox", 0, 0
         )
-        print(f"{result}")
+        print("*** [Contents masked for security] ***")
         return 0
     elif command == OnyxRedisCommand.get_user_token:
         if not user_email:
@@ -210,13 +210,16 @@ def redis_delete_if_exists_helper(key: str, dry_run: bool, r: Redis) -> bool:
     """
 
     if not r.exists(key):
-        logger.info(f"Did not find {key}.")
+        masked_key = f"{key[:10]}..." if len(key) > 10 else "***"
+        logger.info(f"Did not find {masked_key}.")
         return False
 
     if dry_run:
-        logger.info(f"(DRY-RUN) Deleting {key}.")
+        masked_key = f"{key[:10]}..." if len(key) > 10 else "***"
+        logger.info(f"(DRY-RUN) Deleting {masked_key}.")
     else:
-        logger.info(f"Deleting {key}.")
+        masked_key = f"{key[:10]}..." if len(key) > 10 else "***"
+        logger.info(f"Deleting {masked_key}.")
         r.delete(key)
 
     return True
@@ -255,10 +258,12 @@ def purge_by_match_and_type(
 
         count += 1
         if dry_run:
-            logger.info(f"(DRY-RUN) Deleting item {count}: {key_str}")
+            masked_key = f"{key_str[:12]}..." if len(key_str) > 12 else "***"
+            logger.info(f"(DRY-RUN) Deleting item {count}: {masked_key}")
             continue
 
-        logger.info(f"Deleting item {count}: {key_str}")
+        masked_key = f"{key_str[:12]}..." if len(key_str) > 12 else "***"
+        logger.info(f"Deleting item {count}: {masked_key}")
 
         batch_keys.append(key)
 
@@ -314,9 +319,11 @@ def get_user_token_from_redis(r: Redis, user_email: str) -> str | None:
                 matching_key = key_str
                 break
         except json.JSONDecodeError:
-            logger.error(f"Failed to decode JSON for key: {key_str}")
+            masked_key = f"{key_str[:10]}..." if len(key_str) > 10 else "***"
+            logger.error(f"Failed to decode JSON for key: {masked_key}")
         except Exception as e:
-            logger.error(f"Error processing JWT for key: {key_str}. Error: {str(e)}")
+            masked_key = f"{key_str[:10]}..." if len(key_str) > 10 else "***"
+            logger.error(f"Error processing JWT for key: {masked_key}. Error: {str(e)}")
 
     if matching_key:
         return matching_key[len(REDIS_AUTH_KEY_PREFIX) :]
@@ -360,9 +367,11 @@ def delete_user_token_from_redis(
                 matching_key = key_str
                 break
         except json.JSONDecodeError:
-            logger.error(f"Failed to decode JSON for key: {key_str}")
+            masked_key = f"{key_str[:10]}..." if len(key_str) > 10 else "***"
+            logger.error(f"Failed to decode JSON for key: {masked_key}")
         except Exception as e:
-            logger.error(f"Error processing JWT for key: {key_str}. Error: {str(e)}")
+            masked_key = f"{key_str[:10]}..." if len(key_str) > 10 else "***"
+            logger.error(f"Error processing JWT for key: {masked_key}. Error: {str(e)}")
 
     if matching_key:
         if dry_run:
