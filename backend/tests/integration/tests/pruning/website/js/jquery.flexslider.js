@@ -214,17 +214,16 @@
           if (slider.pagingCount > 1) {
             for (var i = 0; i < slider.pagingCount; i++) {
               var liEl = document.createElement('li');
-              var $li = $(liEl);
               if (vars.controlNav === "thumbnails") {
                 var img = document.createElement('img');
-                img.setAttribute("src", slider.slides.eq(i).attr("data-thumb"));
-                $li.append(img);
+                img.src = slider.slides.eq(i).attr("data-thumb");
+                liEl.appendChild(img);
               } else {
                 var btn = document.createElement('a');
                 btn.textContent = j;
-                $li.append(btn);
+                liEl.appendChild(btn);
               }
-              slider.controlNavScaffold.append($li);
+              olElem.appendChild(liEl);
               j++;
             }
           }

@@ -559,7 +559,7 @@
       dElem.setAttribute("scrolling", s ? "auto" : a.iframe.scrolling);
       dElem.setAttribute("src", a.href);
       var d = f(dElem);
-      f(a.wrap).bind("onReset", function () {
+      a.wrap.bind("onReset", function () {
         try {
           f(this)
             .find("iframe")
