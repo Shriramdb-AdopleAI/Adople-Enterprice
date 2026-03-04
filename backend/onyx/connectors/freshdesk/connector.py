@@ -185,8 +185,8 @@ class FreshdeskConnector(PollConnector, LoadConnector):
             domain = domain.replace("http://", "").replace("https://", "")
 
         # Remove .freshdesk.com suffix and any API paths if present
-        if ".freshdesk.com" in domain:
-            domain = domain.split(".freshdesk.com")[0]
+        if domain.endswith(".freshdesk.com"):
+            domain = domain[: -len(".freshdesk.com")]
 
         if not domain:
             raise ConnectorMissingCredentialError("Freshdesk domain cannot be empty")

@@ -70,24 +70,24 @@ def _detect_source_type(url: str) -> DocumentSource | None:
     netloc = parsed.netloc.lower()
     path = parsed.path.lower()
 
-    if "docs.google.com" in netloc or "drive.google.com" in netloc:
+    if netloc == "docs.google.com" or netloc.endswith(".docs.google.com") or netloc == "drive.google.com" or netloc.endswith(".drive.google.com"):
         return DocumentSource.GOOGLE_DRIVE
-    if "notion.so" in netloc or "notion.site" in netloc:
+    if netloc == "notion.so" or netloc.endswith(".notion.so") or netloc == "notion.site" or netloc.endswith(".notion.site"):
         return DocumentSource.NOTION
-    if "atlassian.net" in netloc:
+    if netloc.endswith("atlassian.net"):
         # Check path for Jira indicators (more specific than netloc)
         if "/jira/" in path or "/browse/" in path or "jira" in netloc:
             return DocumentSource.JIRA
         return DocumentSource.CONFLUENCE
-    if "github.com" in netloc:
+    if netloc == "github.com" or netloc.endswith(".github.com"):
         return DocumentSource.GITHUB
-    if "gitlab.com" in netloc:
+    if netloc == "gitlab.com" or netloc.endswith(".gitlab.com"):
         return DocumentSource.GITLAB
-    if "sharepoint.com" in netloc:
+    if netloc.endswith("sharepoint.com"):
         return DocumentSource.SHAREPOINT
-    if "slack.com" in netloc:
+    if netloc == "slack.com" or netloc.endswith(".slack.com"):
         return DocumentSource.SLACK
-    if "linear.app" in netloc:
+    if netloc == "linear.app" or netloc.endswith(".linear.app"):
         return DocumentSource.LINEAR
 
     return None

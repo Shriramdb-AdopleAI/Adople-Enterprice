@@ -347,8 +347,10 @@ class GoogleDriveConnector(
         netloc = parsed.netloc.lower()
 
         if not (
-            netloc.startswith("docs.google.com")
-            or netloc.startswith("drive.google.com")
+            netloc == "docs.google.com"
+            or netloc.endswith(".docs.google.com")
+            or netloc == "drive.google.com"
+            or netloc.endswith(".drive.google.com")
         ):
             return NormalizationResult(normalized_url=None, use_default=False)
 

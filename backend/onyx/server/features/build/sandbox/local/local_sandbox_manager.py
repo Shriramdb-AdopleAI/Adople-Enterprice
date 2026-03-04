@@ -149,7 +149,13 @@ class LocalSandboxManager(SandboxManager):
         Returns:
             Path to the sandbox directory
         """
-        return Path(SANDBOX_BASE_PATH) / str(sandbox_id)
+        # Ensure ID doesn't contain path traversal components
+        safe_id = str(sandbox_id)
+        if ".." in safe_id or "/" in safe_id or "\\" in safe_id:
+            logger.error(f"Malicious sandbox_id detected: {sandbox_id}")
+            raise ValueError(f"Invalid sandbox_id: {sandbox_id}")
+
+        return Path(SANDBOX_BASE_PATH) / safe_id
 
     def _get_session_path(self, sandbox_id: str | UUID, session_id: str | UUID) -> Path:
         """Get the filesystem path for a session workspace.
@@ -161,7 +167,13 @@ class LocalSandboxManager(SandboxManager):
         Returns:
             Path to the session workspace directory (sessions/$session_id/)
         """
-        return self._get_sandbox_path(sandbox_id) / "sessions" / str(session_id)
+        # Ensure session_id doesn't contain path traversal components
+        safe_session_id = str(session_id)
+        if ".." in safe_session_id or "/" in safe_session_id or "\\" in safe_session_id:
+            logger.error(f"Malicious session_id detected: {session_id}")
+            raise ValueError(f"Invalid session_id: {session_id}")
+
+        return self._get_sandbox_path(sandbox_id) / "sessions" / safe_session_id
 
     def _setup_filtered_files(
         self,

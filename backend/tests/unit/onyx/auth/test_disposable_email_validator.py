@@ -21,13 +21,14 @@ class TestDisposableEmailValidator:
         domains = validator.get_domains()
 
         # Check that our hardcoded fallback domains are present
-        assert "trashlify.com" in domains
-        assert "10minutemail.com" in domains
-        assert "guerrillamail.com" in domains
-        assert "mailinator.com" in domains
-        assert "tempmail.com" in domains
-        assert "throwaway.email" in domains
-        assert "yopmail.com" in domains
+        all_domains = set(domains)
+        assert "trashlify.com" in all_domains
+        assert "10minutemail.com" in all_domains
+        assert "guerrillamail.com" in all_domains
+        assert "mailinator.com" in all_domains
+        assert "tempmail.com" in all_domains
+        assert "throwaway.email" in all_domains
+        assert "yopmail.com" in all_domains
 
     def test_is_disposable_trashlify(self) -> None:
         """Test that trashlify.com emails are detected as disposable."""

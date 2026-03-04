@@ -85,7 +85,8 @@ def _make_attachment_link(
 ) -> str | None:
     download_link = ""
 
-    if "api.atlassian.com" in confluence_client.url:
+    netloc = urlparse(confluence_client.url).netloc.lower()
+    if netloc == "api.atlassian.com" or netloc.endswith(".api.atlassian.com"):
         # https://developer.atlassian.com/cloud/confluence/rest/v1/api-group-content---attachments/#api-wiki-rest-api-content-id-child-attachment-attachmentid-download-get
         if not parent_content_id:
             logger.warning(

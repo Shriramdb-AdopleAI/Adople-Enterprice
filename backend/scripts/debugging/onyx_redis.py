@@ -160,7 +160,8 @@ def onyx_redis(
             return 1
         token_key = get_user_token_from_redis(r, user_email)
         if token_key:
-            print(f"Token key for user {user_email}: {token_key}")
+            masked_token = f"{token_key[:10]}...{token_key[-10:]}" if len(token_key) > 20 else "***"
+            print(f"Token key for user {user_email}: {masked_token}")
             return 0
         else:
             print(f"No token found for user {user_email}")
@@ -365,7 +366,8 @@ def delete_user_token_from_redis(
 
     if matching_key:
         if dry_run:
-            logger.info(f"(DRY-RUN) Would delete token key: {matching_key}")
+            masked_key = f"{matching_key[:10]}...{matching_key[-10:]}" if len(matching_key) > 20 else "***"
+            logger.info(f"(DRY-RUN) Would delete token key: {masked_key}")
         else:
             r.delete(matching_key)
             logger.info(f"Deleted token for user: {user_email}")

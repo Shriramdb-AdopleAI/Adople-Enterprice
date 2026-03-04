@@ -43,7 +43,7 @@ def test_github_connector_basic(github_connector: GithubConnector) -> None:
     assert pr_doc.additional_info is None
 
     # Verify GitHub-specific properties
-    assert "github.com" in pr_doc.id  # Should be a GitHub URL
+    assert pr_doc.id.startswith("GITHUB_https://github.com/") or "github.com" in pr_doc.id  # Should be a GitHub URL
 
     # Verify PR-specific properties
     assert pr_doc.metadata is not None

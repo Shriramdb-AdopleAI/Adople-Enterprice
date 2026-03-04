@@ -42,7 +42,7 @@ def hash_api_key(api_key: str) -> str:
     # NOTE: no salt is needed, as the API key is randomly generated
     # and overlaps are impossible
     if api_key.startswith(API_KEY_PREFIX):
-        return hashlib.sha256(api_key.encode("utf-8")).hexdigest()
+        return hashlib.sha512(api_key.encode("utf-8")).hexdigest()
 
     if api_key.startswith(DEPRECATED_API_KEY_PREFIX):
         return _deprecated_hash_api_key(api_key)
