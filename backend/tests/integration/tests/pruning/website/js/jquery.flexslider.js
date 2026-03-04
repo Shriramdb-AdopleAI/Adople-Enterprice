@@ -396,9 +396,11 @@
       },
       pausePlay: {
         setup: function () {
-          var pausePlayScaffold = $(
-            '<div class="' + namespace + 'pauseplay"><a></a></div>',
-          );
+          var _ppDiv = document.createElement("div");
+          _ppDiv.className = namespace + "pauseplay";
+          var _ppA = document.createElement("a");
+          _ppDiv.appendChild(_ppA);
+          var pausePlayScaffold = $(_ppDiv);
 
           // CONTROLSCONTAINER:
           if (slider.controlsContainer) {
@@ -935,7 +937,9 @@
         var sliderOffset, arr;
 
         if (type === "init") {
-          slider.viewport = $('<div class="' + namespace + 'viewport"></div>')
+          var _sVp = document.createElement("div");
+          _sVp.className = namespace + "viewport";
+          slider.viewport = $(_sVp)
             .css({ overflow: "hidden", position: "relative" })
             .appendTo(slider)
             .append(slider.container);

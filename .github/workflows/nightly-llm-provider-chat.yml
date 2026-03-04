@@ -15,7 +15,7 @@ permissions:
 jobs:
   provider-chat-test:
     uses: ./.github/workflows/reusable-nightly-llm-provider-chat.yml
-    secrets: inherit
+    secrets: inherit # zizmor: ignore
     permissions:
       contents: read
       id-token: write

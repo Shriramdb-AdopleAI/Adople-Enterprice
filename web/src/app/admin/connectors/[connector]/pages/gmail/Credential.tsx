@@ -186,9 +186,9 @@ const GmailCredentialUpload = ({ onSuccess }: { onSuccess?: () => void }) => {
                   : isDragging
                     ? "Drop JSON file here"
                     : truncateString(
-                        fileName || "Select or drag JSON credentials file...",
-                        50
-                      )}
+                      fileName || "Select or drag JSON credentials file...",
+                      50
+                    )}
               </span>
             </div>
             <input
@@ -284,87 +284,86 @@ export const GmailJsonUploadSection = ({
 
       {(localServiceAccountData?.service_account_email ||
         localAppCredentialData?.client_id) && (
-        <div className="mb-4">
-          <div className="relative flex flex-1 items-center">
-            <label
-              className={cn(
-                "flex h-10 items-center justify-center w-full px-4 py-2 border border-dashed rounded-md transition-colors",
-                false
-                  ? "opacity-70 cursor-not-allowed border-background-400 bg-background-50/30"
-                  : "cursor-pointer hover:bg-background-50/30 hover:border-primary dark:hover:border-primary border-background-300 dark:border-background-600"
-              )}
-            >
-              <div className="flex items-center space-x-2">
-                {false ? (
-                  <div className="h-4 w-4 border-t-2 border-b-2 border-primary rounded-full animate-spin"></div>
-                ) : (
-                  <FiFile className="h-4 w-4 text-text-500" />
+          <div className="mb-4">
+            <div className="relative flex flex-1 items-center">
+              <label
+                className={cn(
+                  "flex h-10 items-center justify-center w-full px-4 py-2 border border-dashed rounded-md transition-colors",
+                  false
+                    ? "opacity-70 cursor-not-allowed border-background-400 bg-background-50/30"
+                    : "cursor-pointer hover:bg-background-50/30 hover:border-primary dark:hover:border-primary border-background-300 dark:border-background-600"
                 )}
-                <span className="text-sm text-text-500">
-                  {truncateString(
-                    localServiceAccountData?.service_account_email ||
+              >
+                <div className="flex items-center space-x-2">
+                  {false ? (
+                    <div className="h-4 w-4 border-t-2 border-b-2 border-primary rounded-full animate-spin"></div>
+                  ) : (
+                    <FiFile className="h-4 w-4 text-text-500" />
+                  )}
+                  <span className="text-sm text-text-500">
+                    {truncateString(
+                      localServiceAccountData?.service_account_email ||
                       localAppCredentialData?.client_id ||
                       "",
-                    50
-                  )}
-                </span>
-              </div>
-            </label>
-          </div>
-          {isAdmin && !existingAuthCredential && (
-            <div className="mt-2">
-              <Button
-                danger
-                onClick={async () => {
-                  const endpoint =
-                    localServiceAccountData?.service_account_email
-                      ? "/api/manage/admin/connector/gmail/service-account-key"
-                      : "/api/manage/admin/connector/gmail/app-credential";
+                      50
+                    )}
+                  </span>
+                </div>
+              </label>
+            </div>
+            {isAdmin && !existingAuthCredential && (
+              <div className="mt-2">
+                <Button
+                  danger
+                  onClick={async () => {
+                    const endpoint =
+                      localServiceAccountData?.service_account_email
+                        ? "/api/manage/admin/connector/gmail/service-account-key"
+                        : "/api/manage/admin/connector/gmail/app-credential";
 
-                  const response = await fetch(endpoint, {
-                    method: "DELETE",
-                  });
+                    const response = await fetch(endpoint, {
+                      method: "DELETE",
+                    });
 
-                  if (response.ok) {
-                    mutate(endpoint);
-                    // Also mutate the credential endpoints to ensure Step 2 is reset
-                    mutate(buildSimilarCredentialInfoURL(ValidSources.Gmail));
+                    if (response.ok) {
+                      mutate(endpoint);
+                      // Also mutate the credential endpoints to ensure Step 2 is reset
+                      mutate(buildSimilarCredentialInfoURL(ValidSources.Gmail));
 
-                    // Add additional mutations to refresh all credential-related endpoints
-                    mutate("/api/manage/admin/connector/gmail/credentials");
-                    mutate(
-                      "/api/manage/admin/connector/gmail/public-credential"
-                    );
-                    mutate(
-                      "/api/manage/admin/connector/gmail/service-account-credential"
-                    );
+                      // Add additional mutations to refresh all credential-related endpoints
+                      mutate("/api/manage/admin/connector/gmail/credentials");
+                      mutate(
+                        "/api/manage/admin/connector/gmail/public-credential"
+                      );
+                      mutate(
+                        "/api/manage/admin/connector/gmail/service-account-credential"
+                      );
 
-                    toast.success(
-                      `Successfully deleted ${
-                        localServiceAccountData
+                      toast.success(
+                        `Successfully deleted ${localServiceAccountData
                           ? "service account key"
                           : "app credentials"
-                      }`
-                    );
-                    // Immediately update local state
-                    if (localServiceAccountData) {
-                      setLocalServiceAccountData(undefined);
+                        }`
+                      );
+                      // Immediately update local state
+                      if (localServiceAccountData) {
+                        setLocalServiceAccountData(undefined);
+                      } else {
+                        setLocalAppCredentialData(undefined);
+                      }
+                      handleSuccess();
                     } else {
-                      setLocalAppCredentialData(undefined);
+                      const errorMsg = await response.text();
+                      toast.error(`Failed to delete credentials - ${errorMsg}`);
                     }
-                    handleSuccess();
-                  } else {
-                    const errorMsg = await response.text();
-                    toast.error(`Failed to delete credentials - ${errorMsg}`);
-                  }
-                }}
-              >
-                Delete Credentials
-              </Button>
-            </div>
-          )}
-        </div>
-      )}
+                  }}
+                >
+                  Delete Credentials
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
 
       {!(
         localServiceAccountData?.service_account_email ||
@@ -602,6 +601,8 @@ export const GmailAuthSection = ({
               if (buildMode) {
                 Cookies.set(CRAFT_OAUTH_COOKIE_NAME, "true", {
                   path: "/",
+                  secure: true,
+                  sameSite: "strict",
                 });
               }
               const [authUrl, errorMsg] = await setupGmailOAuth({

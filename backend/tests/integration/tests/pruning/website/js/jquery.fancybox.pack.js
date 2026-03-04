@@ -556,9 +556,9 @@
     _loadIframe: function () {
       var a = b.coming, dElem = document.createElement("iframe");
       dElem.className = "fancybox-iframe";
-      var d = f(dElem)
-        .attr("scrolling", s ? "auto" : a.iframe.scrolling)
-        .attr("src", a.href);
+      dElem.setAttribute("scrolling", s ? "auto" : a.iframe.scrolling);
+      dElem.setAttribute("src", a.href);
+      var d = f(dElem);
       f(a.wrap).bind("onReset", function () {
         try {
           f(this)
@@ -581,7 +581,8 @@
               .show();
             b._afterLoad();
           }));
-      a.content = d.appendTo(a.inner);
+      a.inner.get(0).appendChild(d.get(0));
+      a.content = d;
       a.iframe.preload || b._afterLoad();
     },
     _preloadImages: function () {
@@ -655,21 +656,33 @@
               e = a.tpl.image.replace("{href}", g);
               break;
             case "swf":
-              (e =
-                '<object id="fancybox-swf" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="100%" height="100%"><param name="movie" value="' +
-                g +
-                '"></param>'),
-                (h = ""),
-                f.each(a.swf, function (a, b) {
-                  e += '<param name="' + a + '" value="' + b + '"></param>';
-                  h += " " + a + '="' + b + '"';
-                }),
-                (e +=
-                  '<embed src="' +
-                  g +
-                  '" type="application/x-shockwave-flash" width="100%" height="100%"' +
-                  h +
-                  "></embed></object>");
+              var objNode = document.createElement("object");
+              objNode.id = "fancybox-swf";
+              objNode.setAttribute("classid", "clsid:D27CDB6E-AE6D-11cf-96B8-444553540000");
+              objNode.setAttribute("width", "100%");
+              objNode.setAttribute("height", "100%");
+
+              var paramNode = document.createElement("param");
+              paramNode.setAttribute("name", "movie");
+              paramNode.setAttribute("value", g);
+              objNode.appendChild(paramNode);
+
+              var embedNode = document.createElement("embed");
+              embedNode.setAttribute("src", g);
+              embedNode.setAttribute("type", "application/x-shockwave-flash");
+              embedNode.setAttribute("width", "100%");
+              embedNode.setAttribute("height", "100%");
+
+              f.each(a.swf, function (aNm, bVal) {
+                var p = document.createElement("param");
+                p.setAttribute("name", aNm);
+                p.setAttribute("value", bVal);
+                objNode.appendChild(p);
+                embedNode.setAttribute(aNm, bVal);
+              });
+
+              objNode.appendChild(embedNode);
+              e = f(objNode);
           }
           (!t(e) || !e.parent().is(a.inner)) && a.inner.append(e);
           b.trigger("beforeShow");
@@ -1101,9 +1114,9 @@
               (b.current.margin[2] += Math.abs(l(d.css("margin-bottom"))));
         }
         if ("top" === a.position) {
-          d.prependTo(c);
+          c.get(0).insertBefore(d.get(0), c.get(0).firstChild);
         } else {
-          d.appendTo(c);
+          c.get(0).appendChild(d.get(0));
         }
       }
     },

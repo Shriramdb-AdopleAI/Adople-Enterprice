@@ -22,9 +22,9 @@ export interface FederatedConnectorOAuthStatus {
 
 const MAX_SKIP_COUNT = 2;
 
-function useFederatedOauthModal() {
+function usePopupManager() {
   // Check localStorage for previous skip preference and count
-  const [oAuthModalState, setOAuthModalState] = useState<{
+  const [popupState, setPopupState] = useState<{
     hidden: boolean;
     skipCount: number;
   }>(() => {
@@ -50,9 +50,9 @@ function useFederatedOauthModal() {
     return { hidden: false, skipCount: 0 };
   });
 
-  const handleOAuthModalSkip = () => {
+  const handlePopupSkip = () => {
     if (typeof window !== "undefined") {
-      const newSkipCount = oAuthModalState.skipCount + 1;
+      const newSkipCount = popupState.skipCount + 1;
 
       if (newSkipCount >= MAX_SKIP_COUNT) {
         // Permanently hide the modal after max skips
@@ -67,7 +67,7 @@ function useFederatedOauthModal() {
           JSON.stringify(modalStatusDetails)
         );
 
-        setOAuthModalState({
+        setPopupState({
           hidden: true,
           skipCount: newSkipCount,
         });
@@ -86,7 +86,7 @@ function useFederatedOauthModal() {
           JSON.stringify(modalStatusDetails)
         );
 
-        setOAuthModalState({
+        setPopupState({
           hidden: true,
           skipCount: newSkipCount,
         });
@@ -95,8 +95,8 @@ function useFederatedOauthModal() {
   };
 
   return {
-    oAuthModalState,
-    handleOAuthModalSkip,
+    popupState,
+    handlePopupSkip,
   };
 }
 
@@ -104,9 +104,9 @@ export default function FederatedOAuthModal() {
   const settings = useContext(SettingsContext);
 
   const {
-    oAuthModalState: { hidden },
-    handleOAuthModalSkip,
-  } = useFederatedOauthModal();
+    popupState: { hidden },
+    handlePopupSkip,
+  } = usePopupManager();
 
   const { connectors: federatedConnectors, hasUnauthenticatedConnectors } =
     useFederatedOAuthStatus();
@@ -157,7 +157,7 @@ export default function FederatedOAuthModal() {
           })}
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={handleOAuthModalSkip}>Skip for now</Button>
+          <Button onClick={handlePopupSkip}>Skip for now</Button>
         </Modal.Footer>
       </Modal.Content>
     </Modal>

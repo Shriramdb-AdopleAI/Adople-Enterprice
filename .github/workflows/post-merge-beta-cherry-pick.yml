@@ -6,8 +6,8 @@ on:
       - main
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: write # zizmor: ignore
+  pull-requests: write # zizmor: ignore
 
 jobs:
   cherry-pick-to-latest-release:

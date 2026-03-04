@@ -59,7 +59,7 @@ export default function CredentialStep({
   onCredentialDeleted,
   onContinue,
   onOAuthRedirect,
-  refresh = () => {},
+  refresh = () => { },
   isSingleStep = false,
   onConnectorSuccess,
 }: CredentialStepProps) {
@@ -213,6 +213,8 @@ export default function CredentialStep({
                         if (connectorType === ValidSources.GoogleDrive) {
                           Cookies.set(CRAFT_OAUTH_COOKIE_NAME, "true", {
                             path: "/",
+                            secure: true,
+                            sameSite: "strict",
                           });
                           onOAuthRedirect();
                         }
@@ -237,8 +239,8 @@ export default function CredentialStep({
                         {isAuthorizing
                           ? "Authorizing..."
                           : `Authorize with ${getSourceDisplayName(
-                              connectorType
-                            )}`}
+                            connectorType
+                          )}`}
                       </Button>
                     )}
                 </div>

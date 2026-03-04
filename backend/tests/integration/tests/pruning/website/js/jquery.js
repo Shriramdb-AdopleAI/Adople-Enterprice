@@ -720,6 +720,7 @@
         for (; i < j; i++)
           if ((a = arguments[i]) != null)
             for (c in a) {
+              if (c === "__proto__" || c === "constructor" || c === "prototype") continue;
               (d = h[c]), (e = a[c]);
               if (h === e) continue;
               k && e && (p.isPlainObject(e) || (f = p.isArray(e)))

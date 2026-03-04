@@ -43,7 +43,7 @@
 
       //Test for controlsContainer
       if (slider.vars.controlsContainer != "") {
-        slider.controlsContainer = $(slider.vars.controlsContainer).eq(
+        slider.controlsContainer = $(document).find(slider.vars.controlsContainer).eq(
           $(".slides").index(slider.container),
         );
         slider.containerExists = slider.controlsContainer.length > 0;
