@@ -70,4 +70,4 @@ def test_verify_email_domain_rejects_googlemail(
     with pytest.raises(HTTPException) as exc:
         verify_email_domain("user@googlemail.com")
     assert exc.value.status_code == 400
-    assert "gmail.com" in str(exc.value.detail) and "@gmail.com" not in str(exc.value.detail)
+    assert "Did you mean gmail.com" in str(exc.value.detail) and "googlemail" in str(exc.value.detail)

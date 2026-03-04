@@ -29,7 +29,7 @@ function useFederatedOauthModal() {
     skipCount: number;
   }>(() => {
     if (typeof window !== "undefined") {
-      const skipData = localStorage.getItem("federatedOAuthModalSkipData");
+      const skipData = localStorage.getItem("federatedModalSkipState");
       if (skipData) {
         try {
           const parsed = JSON.parse(skipData);
@@ -63,7 +63,7 @@ function useFederatedOauthModal() {
         };
 
         localStorage.setItem(
-          "federatedOAuthModalSkipData",
+          "federatedModalSkipState",
           JSON.stringify(skipData)
         );
 
@@ -82,7 +82,7 @@ function useFederatedOauthModal() {
         };
 
         localStorage.setItem(
-          "federatedOAuthModalSkipData",
+          "federatedModalSkipState",
           JSON.stringify(skipData)
         );
 

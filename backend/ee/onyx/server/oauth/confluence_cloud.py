@@ -234,11 +234,12 @@ def confluence_oauth_callback(
 
         credential = create_credential(credential_info, user, db_session)
     except Exception as e:
+        logger.error(f"Error handling oauth: {e}")
         return JSONResponse(
             status_code=500,
             content={
                 "success": False,
-                "message": f"An error occurred during Confluence Cloud OAuth: {str(e)}",
+                "message": "An error occurred during Confluence Cloud OAuth: Internal Server Error",
             },
         )
     finally:
@@ -299,11 +300,12 @@ def confluence_oauth_accessible_resources(
         except ValidationError as e:
             raise RuntimeError(f"Failed to parse accessible resources: {e}")
     except Exception as e:
+        logger.error(f"Error retrieving resources: {e}")
         return JSONResponse(
             status_code=500,
             content={
                 "success": False,
-                "message": f"An error occurred retrieving Confluence Cloud accessible resources: {str(e)}",
+                "message": "An error occurred retrieving Confluence Cloud accessible resources: Internal Server Error",
             },
         )
 
@@ -354,11 +356,12 @@ def confluence_oauth_finalize(
     try:
         update_credential_json(credential_id, new_credential_json, user, db_session)
     except Exception as e:
+        logger.error(f"Error during OAuth finalize: {e}")
         return JSONResponse(
             status_code=500,
             content={
                 "success": False,
-                "message": f"An error occurred during Confluence Cloud OAuth: {str(e)}",
+                "message": "An error occurred during Confluence Cloud OAuth: Internal Server Error",
             },
         )
 

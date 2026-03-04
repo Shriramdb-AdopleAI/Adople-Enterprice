@@ -633,7 +633,7 @@ def handle_send_chat_message(
 
         except Exception as e:
             logger.exception("Error in chat message streaming")
-            yield json.dumps({"error": str(e)})
+            yield json.dumps({"error": "Internal Server Error"})
 
         finally:
             logger.debug("Stream generator finished")

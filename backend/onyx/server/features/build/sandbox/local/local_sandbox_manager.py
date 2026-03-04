@@ -174,7 +174,8 @@ class LocalSandboxManager(SandboxManager):
         """
         # Ensure session_id doesn't contain path traversal components
         safe_session_id = str(session_id)
-        if ".." in safe_session_id or "/" in safe_session_id or "\\" in safe_session_id:
+        import re
+        if not re.match(r"^[\w-]+$", safe_session_id):
             masked_session_id = f"{safe_session_id[:8]}..." if len(safe_session_id) > 8 else "***"
             logger.error(f"Malicious session_id detected: {masked_session_id}")
             raise ValueError(f"Invalid session_id: {safe_session_id}")
@@ -800,7 +801,7 @@ class LocalSandboxManager(SandboxManager):
             True if the session workspace exists, False otherwise
         """
         session_path = self._get_session_path(sandbox_id, session_id)
-        outputs_path = session_path / "outputs"
+        outputs_path = session_path.resolve() / "outputs"
         return outputs_path.exists()
 
     def ensure_nextjs_running(

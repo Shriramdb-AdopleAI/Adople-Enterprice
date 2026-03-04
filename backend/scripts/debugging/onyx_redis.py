@@ -160,8 +160,7 @@ def onyx_redis(
             return 1
         token_key = get_user_token_from_redis(r, user_email)
         if token_key:
-            masked_token = f"{token_key[:10]}...{token_key[-10:]}" if len(token_key) > 20 else "***"
-            print(f"Token key for user {user_email}: {masked_token}")
+            print(f"Token key for user {user_email}: ***")
             return 0
         else:
             print(f"No token found for user {user_email}")

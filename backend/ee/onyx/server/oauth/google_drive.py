@@ -208,11 +208,12 @@ def handle_google_drive_oauth_callback(
 
         create_credential(credential_info, user, db_session)
     except Exception as e:
+        logger.error(f"Error exchanging code for token: {e}")
         return JSONResponse(
             status_code=500,
             content={
                 "success": False,
-                "message": f"An error occurred during Google Drive OAuth: {str(e)}",
+                "message": "An error occurred during Google Drive OAuth: Internal Server Error",
             },
         )
     finally:

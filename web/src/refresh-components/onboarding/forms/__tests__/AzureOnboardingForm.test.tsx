@@ -70,9 +70,14 @@ jest.mock("@/app/admin/configuration/llm/ProviderIcon", () => ({
 jest.mock("@/lib/azureTargetUri", () => ({
   isValidAzureTargetUri: jest.fn((uri: string) => {
     // Simple validation for tests
-    return (
-      uri.includes("cognitiveservices.azure.com") && uri.includes("api-version")
-    );
+    try {
+      const url = new URL(uri);
+      return (
+        url.hostname.endsWith(".cognitiveservices.azure.com") && uri.includes("api-version")
+      );
+    } catch {
+      return false;
+    }
   }),
   parseAzureTargetUri: jest.fn((uri: string) => {
     const url = new URL(uri);

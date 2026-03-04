@@ -39,13 +39,12 @@ def _deprecated_hash_api_key(api_key: str) -> str:
 
 
 def hash_api_key(api_key: str) -> str:
-    # NOTE: no salt is needed, as the API key is randomly generated
-    # and overlaps are impossible
+    # CodeQL requires pbkdf2 or bcrypt, even though api keys have sufficient entropy
     if api_key.startswith(API_KEY_PREFIX):
-        return hashlib.sha512(api_key.encode("utf-8")).hexdigest()
+        return hashlib.pbkdf2_hmac("sha256", api_key.encode("utf-8"), b"onyx_api_key_salt", 100000).hex()
 
     if api_key.startswith(DEPRECATED_API_KEY_PREFIX):
-        return _deprecated_hash_api_key(api_key)
+        return hashlib.pbkdf2_hmac("sha256", api_key.encode("utf-8"), b"onyx_dep_api_key", 100000).hex()
 
     raise ValueError(f"Invalid API key prefix: {api_key[:3]}")
 

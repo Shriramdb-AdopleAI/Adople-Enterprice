@@ -55,17 +55,14 @@ export async function loginAsWorkerUser(
 
 // Generate a random email and password for throwaway test users.
 const generateRandomCredentials = () => {
-  const randomValues = crypto.randomBytes(16);
-  const randomString = randomValues.toString('hex').substring(0, 8);
+  const randomString = crypto.randomBytes(4).toString('hex');
   const specialChars = "!@#$%^&*()_+{}[]|:;<>,.?~";
 
-  // Use simple modulo for characters
-  const randomSpecialChar =
-    specialChars[randomValues[8] % specialChars.length];
+  const randomSpecialChar = specialChars[crypto.randomInt(0, specialChars.length)];
   const randomUpperCase = String.fromCharCode(
-    65 + (randomValues[9] % 26)
+    65 + crypto.randomInt(0, 26)
   );
-  const randomNumber = randomValues[10] % 10;
+  const randomNumber = crypto.randomInt(0, 10);
 
   return {
     email: `test_${randomString}@example.com`,

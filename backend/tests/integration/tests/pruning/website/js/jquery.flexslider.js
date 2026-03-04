@@ -220,7 +220,9 @@
             for (var i = 0; i < slider.pagingCount; i++) {
               var $li = $('<li></li>');
               if (vars.controlNav === "thumbnails") {
-                $li.append($('<img>', { src: slider.slides.eq(i).attr("data-thumb") }));
+                var img = document.createElement('img');
+                img.src = slider.slides.eq(i).attr("data-thumb");
+                $li.append(img);
               } else {
                 $li.append($('<a></a>', { text: j }));
               }
