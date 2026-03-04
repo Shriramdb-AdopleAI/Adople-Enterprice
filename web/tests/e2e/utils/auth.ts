@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import type { Page } from "@playwright/test";
 import {
   TEST_ADMIN2_CREDENTIALS,
@@ -54,14 +55,17 @@ export async function loginAsWorkerUser(
 
 // Generate a random email and password for throwaway test users.
 const generateRandomCredentials = () => {
-  const randomString = Math.random().toString(36).substring(2, 10);
+  const randomValues = crypto.randomBytes(16);
+  const randomString = randomValues.toString('hex').substring(0, 8);
   const specialChars = "!@#$%^&*()_+{}[]|:;<>,.?~";
+
+  // Use simple modulo for characters
   const randomSpecialChar =
-    specialChars[Math.floor(Math.random() * specialChars.length)];
+    specialChars[randomValues[8] % specialChars.length];
   const randomUpperCase = String.fromCharCode(
-    65 + Math.floor(Math.random() * 26)
+    65 + (randomValues[9] % 26)
   );
-  const randomNumber = Math.floor(Math.random() * 10);
+  const randomNumber = randomValues[10] % 10;
 
   return {
     email: `test_${randomString}@example.com`,

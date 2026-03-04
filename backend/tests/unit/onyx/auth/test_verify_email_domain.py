@@ -24,7 +24,8 @@ def test_verify_email_domain_rejects_non_whitelisted_domain(
     with pytest.raises(HTTPException) as exc:
         verify_email_domain("user@another.com")
     assert exc.value.status_code == 400
-    assert "Email domain is not valid" in exc.value.detail
+    # Ensure the error message specifically mentions the domain and not just a substring
+    assert exc.value.detail == "Email domain 'another.com' is not valid."
 
 
 def test_verify_email_domain_invalid_email_format(
@@ -47,7 +48,7 @@ def test_verify_email_domain_rejects_plus_addressing(
     with pytest.raises(HTTPException) as exc:
         verify_email_domain("user+tag@gmail.com")
     assert exc.value.status_code == 400
-    assert "'+'" in str(exc.value.detail)
+    assert "'+' is not allowed in email addresses" in exc.value.detail
 
 
 def test_verify_email_domain_allows_plus_for_onyx_app(
@@ -69,4 +70,4 @@ def test_verify_email_domain_rejects_googlemail(
     with pytest.raises(HTTPException) as exc:
         verify_email_domain("user@googlemail.com")
     assert exc.value.status_code == 400
-    assert str(exc.value.detail).endswith("gmail.com")
+    assert "gmail.com" in str(exc.value.detail) and "@gmail.com" not in str(exc.value.detail)

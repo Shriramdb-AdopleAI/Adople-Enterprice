@@ -156,7 +156,11 @@ class LocalSandboxManager(SandboxManager):
             logger.error(f"Malicious sandbox_id detected: {masked_id}")
             raise ValueError(f"Invalid sandbox_id: {safe_id}")
 
-        return Path(SANDBOX_BASE_PATH) / safe_id
+        sandbox_path = Path(SANDBOX_BASE_PATH) / safe_id
+        # Use resolve to flatten and check path
+        if not sandbox_path.resolve().is_relative_to(Path(SANDBOX_BASE_PATH).resolve()):
+            raise ValueError(f"Invalid sandbox_id: {sandbox_id}")
+        return sandbox_path
 
     def _get_session_path(self, sandbox_id: str | UUID, session_id: str | UUID) -> Path:
         """Get the filesystem path for a session workspace.
@@ -175,7 +179,11 @@ class LocalSandboxManager(SandboxManager):
             logger.error(f"Malicious session_id detected: {masked_session_id}")
             raise ValueError(f"Invalid session_id: {safe_session_id}")
 
-        return self._get_sandbox_path(sandbox_id) / "sessions" / safe_session_id
+        session_path = self._get_sandbox_path(sandbox_id) / "sessions" / safe_session_id
+        # Use resolve to flatten and check path
+        if not session_path.resolve().is_relative_to(Path(SANDBOX_BASE_PATH).resolve()):
+            raise ValueError(f"Invalid session_id: {session_id}")
+        return session_path
 
     def _setup_filtered_files(
         self,

@@ -74,7 +74,7 @@ def _detect_source_type(url: str) -> DocumentSource | None:
         return DocumentSource.GOOGLE_DRIVE
     if netloc == "notion.so" or netloc.endswith(".notion.so") or netloc == "notion.site" or netloc.endswith(".notion.site"):
         return DocumentSource.NOTION
-    if netloc.endswith("atlassian.net"):
+    if netloc == "atlassian.net" or netloc.endswith(".atlassian.net"):
         # Check path for Jira indicators (more specific than netloc)
         if "/jira/" in path or "/browse/" in path or "jira" in netloc:
             return DocumentSource.JIRA
@@ -83,7 +83,7 @@ def _detect_source_type(url: str) -> DocumentSource | None:
         return DocumentSource.GITHUB
     if netloc == "gitlab.com" or netloc.endswith(".gitlab.com"):
         return DocumentSource.GITLAB
-    if netloc.endswith("sharepoint.com"):
+    if netloc == "sharepoint.com" or netloc.endswith(".sharepoint.com"):
         return DocumentSource.SHAREPOINT
     if netloc == "slack.com" or netloc.endswith(".slack.com"):
         return DocumentSource.SLACK

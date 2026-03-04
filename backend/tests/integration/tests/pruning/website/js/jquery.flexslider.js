@@ -201,30 +201,30 @@
         },
         setupPaging: function () {
           var type =
-              vars.controlNav === "thumbnails"
-                ? "control-thumbs"
-                : "control-paging",
+            vars.controlNav === "thumbnails"
+              ? "control-thumbs"
+              : "control-paging",
             j = 1,
             item;
 
           slider.controlNavScaffold = $(
             '<ol class="' +
-              namespace +
-              "control-nav " +
-              namespace +
-              type +
-              '"></ol>',
+            namespace +
+            "control-nav " +
+            namespace +
+            type +
+            '"></ol>',
           );
 
           if (slider.pagingCount > 1) {
             for (var i = 0; i < slider.pagingCount; i++) {
-              item =
-                vars.controlNav === "thumbnails"
-                  ? '<img src="' +
-                    slider.slides.eq(i).attr("data-thumb") +
-                    '"/>'
-                  : "<a>" + j + "</a>";
-              slider.controlNavScaffold.append("<li>" + item + "</li>");
+              var $li = $('<li></li>');
+              if (vars.controlNav === "thumbnails") {
+                $li.append($('<img>', { src: slider.slides.eq(i).attr("data-thumb") }));
+              } else {
+                $li.append($('<a></a>', { text: j }));
+              }
+              slider.controlNavScaffold.append($li);
               j++;
             }
           }
@@ -311,7 +311,7 @@
           }
           methods.controlNav.set();
           slider.pagingCount > 1 &&
-          slider.pagingCount !== slider.controlNav.length
+            slider.pagingCount !== slider.controlNav.length
             ? slider.update(pos, action)
             : methods.controlNav.active();
         },
@@ -320,16 +320,16 @@
         setup: function () {
           var directionNavScaffold = $(
             '<ul class="' +
-              namespace +
-              'direction-nav"><li><a class="' +
-              namespace +
-              'prev" href="#">' +
-              vars.prevText +
-              '</a></li><li><a class="' +
-              namespace +
-              'next" href="#">' +
-              vars.nextText +
-              "</a></li></ul>",
+            namespace +
+            'direction-nav"><li><a class="' +
+            namespace +
+            'prev" href="#">' +
+            vars.prevText +
+            '</a></li><li><a class="' +
+            namespace +
+            'next" href="#">' +
+            vars.nextText +
+            "</a></li></ul>",
           );
 
           // CONTROLSCONTAINER:
@@ -430,13 +430,13 @@
         update: function (state) {
           state === "play"
             ? slider.pausePlay
-                .removeClass(namespace + "pause")
-                .addClass(namespace + "play")
-                .text(vars.playText)
+              .removeClass(namespace + "pause")
+              .addClass(namespace + "play")
+              .text(vars.playText)
             : slider.pausePlay
-                .removeClass(namespace + "play")
-                .addClass(namespace + "pause")
-                .text(vars.pauseText);
+              .removeClass(namespace + "play")
+              .addClass(namespace + "pause")
+              .text(vars.pauseText);
         },
       },
       touch: function () {
@@ -463,20 +463,20 @@
                 ? 0
                 : carousel && reverse
                   ? slider.limit -
-                    (slider.itemW + vars.itemMargin) *
-                      slider.move *
-                      slider.animatingTo
+                  (slider.itemW + vars.itemMargin) *
+                  slider.move *
+                  slider.animatingTo
                   : carousel && slider.currentSlide === slider.last
                     ? slider.limit
                     : carousel
                       ? (slider.itemW + vars.itemMargin) *
-                        slider.move *
-                        slider.currentSlide
+                      slider.move *
+                      slider.currentSlide
                       : reverse
                         ? (slider.last -
-                            slider.currentSlide +
-                            slider.cloneOffset) *
-                          cwidth
+                          slider.currentSlide +
+                          slider.cloneOffset) *
+                        cwidth
                         : (slider.currentSlide + slider.cloneOffset) * cwidth;
             startX = vertical ? e.touches[0].pageY : e.touches[0].pageX;
             startY = vertical ? e.touches[0].pageX : e.touches[0].pageY;
@@ -501,7 +501,7 @@
                 dx =
                   dx /
                   ((slider.currentSlide === 0 && dx < 0) ||
-                  (slider.currentSlide === slider.last && dx > 0)
+                    (slider.currentSlide === slider.last && dx > 0)
                     ? Math.abs(dx) / cwidth + 2
                     : 1);
               }
@@ -576,9 +576,9 @@
           var $obj = fade ? slider : slider.viewport;
           dur
             ? $obj.animate(
-                { height: slider.slides.eq(slider.animatingTo).height() },
-                dur,
-              )
+              { height: slider.slides.eq(slider.animatingTo).height() },
+              dur,
+            )
             : $obj.height(slider.slides.eq(slider.animatingTo).height());
         }
       },
@@ -621,7 +621,7 @@
 
           if (
             Math.ceil((target + 1) / slider.visible) - 1 !==
-              slider.currentSlide &&
+            slider.currentSlide &&
             target !== 0
           ) {
             slider.currentItem = target;
@@ -679,8 +679,8 @@
         // SLIDE:
         if (!fade) {
           var dimension = vertical
-              ? slider.slides.filter(":first").height()
-              : slider.computedW,
+            ? slider.slides.filter(":first").height()
+            : slider.computedW,
             margin,
             slideString,
             calcNext;
@@ -824,28 +824,28 @@
       return fromNav
         ? true
         : asNav &&
-            slider.currentItem === slider.count - 1 &&
-            target === 0 &&
-            slider.direction === "prev"
+          slider.currentItem === slider.count - 1 &&
+          target === 0 &&
+          slider.direction === "prev"
           ? true
           : asNav &&
-              slider.currentItem === 0 &&
-              target === slider.pagingCount - 1 &&
-              slider.direction !== "next"
+            slider.currentItem === 0 &&
+            target === slider.pagingCount - 1 &&
+            slider.direction !== "next"
             ? false
             : target === slider.currentSlide && !asNav
               ? false
               : vars.animationLoop
                 ? true
                 : slider.atEnd &&
-                    slider.currentSlide === 0 &&
-                    target === last &&
-                    slider.direction !== "next"
+                  slider.currentSlide === 0 &&
+                  target === last &&
+                  slider.direction !== "next"
                   ? false
                   : slider.atEnd &&
-                      slider.currentSlide === last &&
-                      target === 0 &&
-                      slider.direction === "next"
+                    slider.currentSlide === last &&
+                    target === 0 &&
+                    slider.direction === "next"
                     ? false
                     : true;
     };
@@ -866,10 +866,10 @@
     slider.setProps = function (pos, special, dur) {
       var target = (function () {
         var posCheck = pos
-            ? pos
-            : (slider.itemW + vars.itemMargin) *
-              slider.move *
-              slider.animatingTo,
+          ? pos
+          : (slider.itemW + vars.itemMargin) *
+          slider.move *
+          slider.animatingTo,
           posCalc = (function () {
             if (carousel) {
               return special === "setTouch"
@@ -878,9 +878,9 @@
                   ? 0
                   : reverse
                     ? slider.limit -
-                      (slider.itemW + vars.itemMargin) *
-                        slider.move *
-                        slider.animatingTo
+                    (slider.itemW + vars.itemMargin) *
+                    slider.move *
+                    slider.animatingTo
                     : slider.animatingTo === slider.last
                       ? slider.limit
                       : posCheck;
@@ -889,10 +889,10 @@
                 case "setTotal":
                   return reverse
                     ? (slider.count -
-                        1 -
-                        slider.currentSlide +
-                        slider.cloneOffset) *
-                        pos
+                      1 -
+                      slider.currentSlide +
+                      slider.cloneOffset) *
+                    pos
                     : (slider.currentSlide + slider.cloneOffset) * pos;
                 case "setTouch":
                   return reverse ? pos : pos;
@@ -1065,11 +1065,11 @@
             ? 0
             : vars.itemWidth > slider.w
               ? (slider.itemW + slideMargin * 2) * slider.count -
-                slider.w -
-                slideMargin
+              slider.w -
+              slideMargin
               : (slider.itemW + slideMargin) * slider.count -
-                slider.w -
-                slideMargin;
+              slider.w -
+              slideMargin;
       } else {
         slider.itemW = slider.w;
         slider.pagingCount = slider.count;
@@ -1226,12 +1226,12 @@
     move: 0, //{NEW} Integer: Number of carousel items that should move on animation. If 0, slider will move all visible items.
 
     // Callback API
-    start: function () {}, //Callback: function(slider) - Fires when the slider loads the first slide
-    before: function () {}, //Callback: function(slider) - Fires asynchronously with each slider animation
-    after: function () {}, //Callback: function(slider) - Fires after each slider animation completes
-    end: function () {}, //Callback: function(slider) - Fires when the slider reaches the last slide (asynchronous)
-    added: function () {}, //{NEW} Callback: function(slider) - Fires after a slide is added
-    removed: function () {}, //{NEW} Callback: function(slider) - Fires after a slide is removed
+    start: function () { }, //Callback: function(slider) - Fires when the slider loads the first slide
+    before: function () { }, //Callback: function(slider) - Fires asynchronously with each slider animation
+    after: function () { }, //Callback: function(slider) - Fires after each slider animation completes
+    end: function () { }, //Callback: function(slider) - Fires when the slider reaches the last slide (asynchronous)
+    added: function () { }, //{NEW} Callback: function(slider) - Fires after a slide is added
+    removed: function () { }, //{NEW} Callback: function(slider) - Fires after a slide is removed
   };
 
   //FlexSlider: Plugin Function

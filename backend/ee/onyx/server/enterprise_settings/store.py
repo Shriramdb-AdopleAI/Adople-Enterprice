@@ -110,12 +110,13 @@ def upload_logo(file: UploadFile | str, is_logotype: bool = False) -> bool:
             return False
 
         # Sanitize the path to prevent traversal
-        normalized_path = os.path.normpath(file)
-        if ".." in normalized_path.split(os.path.sep):
-            logger.error(f"Invalid path: {file}")
+        # Path.resolve() canonicalizes the path
+        file_path = Path(file).resolve()
+        if not file_path.exists() or not is_valid_file_type(str(file_path)):
+            logger.error("Invalid file or file type")
             return False
 
-        with open(normalized_path, "rb") as file_handle:
+        with open(file_path, "rb") as file_handle:
             file_content = file_handle.read()
         content = BytesIO(file_content)
         display_name = file

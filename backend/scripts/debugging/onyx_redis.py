@@ -319,11 +319,9 @@ def get_user_token_from_redis(r: Redis, user_email: str) -> str | None:
                 matching_key = key_str
                 break
         except json.JSONDecodeError:
-            masked_key = f"{key_str[:10]}..." if len(key_str) > 10 else "***"
-            logger.error(f"Failed to decode JSON for key: {masked_key}")
-        except Exception as e:
-            masked_key = f"{key_str[:10]}..." if len(key_str) > 10 else "***"
-            logger.error(f"Error processing JWT for key: {masked_key}. Error: {str(e)}")
+            logger.error("Failed to decode token data in Redis")
+        except Exception:
+            logger.error("Error processing token data in Redis")
 
     if matching_key:
         return matching_key[len(REDIS_AUTH_KEY_PREFIX) :]
@@ -367,22 +365,22 @@ def delete_user_token_from_redis(
                 matching_key = key_str
                 break
         except json.JSONDecodeError:
-            masked_key = f"{key_str[:10]}..." if len(key_str) > 10 else "***"
-            logger.error(f"Failed to decode JSON for key: {masked_key}")
-        except Exception as e:
-            masked_key = f"{key_str[:10]}..." if len(key_str) > 10 else "***"
-            logger.error(f"Error processing JWT for key: {masked_key}. Error: {str(e)}")
+            logger.error("Failed to decode token data in Redis")
+        except Exception:
+            logger.error("Error processing token data in Redis")
 
     if matching_key:
         if dry_run:
             masked_key = f"{matching_key[:10]}...{matching_key[-10:]}" if len(matching_key) > 20 else "***"
-            logger.info(f"(DRY-RUN) Would delete token key: {masked_key}")
+            logger.info("(DRY-RUN) Would delete one matching token key")
         else:
             r.delete(matching_key)
-            logger.info(f"Deleted token for user: {user_email}")
+            masked_email = f"{user_email[:3]}...@{user_email.split('@')[-1]}" if '@' in user_email else "***"
+            logger.info(f"Deleted token for user: {masked_email}")
         return True
     else:
-        logger.info(f"No token found for user: {user_email}")
+        masked_email = f"{user_email[:3]}...@{user_email.split('@')[-1]}" if '@' in user_email else "***"
+        logger.info(f"No token found for user: {masked_email}")
         return False
 
 
