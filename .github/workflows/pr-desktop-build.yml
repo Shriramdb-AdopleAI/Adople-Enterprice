@@ -49,15 +49,17 @@ jobs:
         with:
           persist-credentials: false
 
+      # zizmor: ignore
       - name: Setup node
         uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238
         with:
           node-version: 24
-          cache: "npm" # zizmor: ignore[cache-poisoning]
+          cache: "npm"
           cache-dependency-path: ./desktop/package-lock.json
 
+      # zizmor: ignore
       - name: Setup Rust
-        uses: dtolnay/rust-toolchain@4be9e76fd7c4901c61fb841f559994984270fce7 # zizmor: ignore
+        uses: dtolnay/rust-toolchain@4be9e76fd7c4901c61fb841f559994984270fce7
         with:
           toolchain: stable
           targets: ${{ matrix.target }}

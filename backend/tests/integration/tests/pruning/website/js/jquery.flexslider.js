@@ -216,7 +216,10 @@
               var liEl = document.createElement('li');
               if (vars.controlNav === "thumbnails") {
                 var img = document.createElement('img');
-                img.src = slider.slides.eq(i).attr("data-thumb");
+                var thumbVal = String(slider.slides.eq(i).attr("data-thumb") || "");
+                if (thumbVal.toLowerCase().indexOf("javascript:") !== 0) {
+                  img.src = thumbVal;
+                }
                 liEl.appendChild(img);
               } else {
                 var btn = document.createElement('a');

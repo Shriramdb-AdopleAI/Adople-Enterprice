@@ -5,9 +5,10 @@ on:
     branches:
       - main
 
+# zizmor: ignore[overly-broad-permissions]
 permissions:
-  contents: write # zizmor: ignore
-  pull-requests: write # zizmor: ignore
+  contents: write
+  pull-requests: write
 
 jobs:
   cherry-pick-to-latest-release:
