@@ -207,14 +207,7 @@
             j = 1,
             item;
 
-          slider.controlNavScaffold = $(
-            '<ol class="' +
-            namespace +
-            "control-nav " +
-            namespace +
-            type +
-            '"></ol>',
-          );
+          slider.controlNavScaffold = $('<ol class="' + namespace + 'control-nav ' + namespace + type + '"></ol>');
 
           if (slider.pagingCount > 1) {
             for (var i = 0; i < slider.pagingCount; i++) {
@@ -224,7 +217,9 @@
                 img.src = slider.slides.eq(i).attr("data-thumb");
                 $li.append(img);
               } else {
-                $li.append($('<a></a>', { text: j }));
+                var btn = document.createElement('a');
+                btn.textContent = j;
+                $li.append(btn);
               }
               slider.controlNavScaffold.append($li);
               j++;
@@ -320,19 +315,12 @@
       },
       directionNav: {
         setup: function () {
-          var directionNavScaffold = $(
-            '<ul class="' +
-            namespace +
-            'direction-nav"><li><a class="' +
-            namespace +
-            'prev" href="#">' +
-            vars.prevText +
-            '</a></li><li><a class="' +
-            namespace +
-            'next" href="#">' +
-            vars.nextText +
-            "</a></li></ul>",
-          );
+          var directionNavScaffold = $('<ul class="' + namespace + 'direction-nav"></ul>');
+          var prevLi = $('<li></li>');
+          prevLi.append($('<a class="' + namespace + 'prev" href="#"></a>').text(vars.prevText));
+          var nextLi = $('<li></li>');
+          nextLi.append($('<a class="' + namespace + 'next" href="#"></a>').text(vars.nextText));
+          directionNavScaffold.append(prevLi).append(nextLi);
 
           // CONTROLSCONTAINER:
           if (slider.controlsContainer) {

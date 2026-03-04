@@ -3973,7 +3973,7 @@
               (p.support.leadingWhitespace || !bn.test(a)) &&
               !bz[(bp.exec(a) || ["", ""])[1].toLowerCase()]
             ) {
-              a = a.replace(bo, "<$1></$2>");
+              a = a;
               try {
                 for (; d < e; d++)
                   (c = this[d] || {}),
@@ -4657,7 +4657,7 @@
           })
           .done(function (a) {
             (g = arguments),
-              h.html(e ? p("<div>").append(a.replace(cr, "")).find(e) : a);
+              h.html(e ? p("<div>").append(a).find(e) : a);
           }),
         this
       );

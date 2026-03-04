@@ -56,7 +56,7 @@ function useFederatedOauthModal() {
 
       if (newSkipCount >= MAX_SKIP_COUNT) {
         // Permanently hide the modal after max skips
-        const skipData = {
+        const modalStatusDetails = {
           skipCount: newSkipCount,
           hideUntil: 0,
           permanentlyHidden: true,
@@ -64,7 +64,7 @@ function useFederatedOauthModal() {
 
         localStorage.setItem(
           "federatedModalSkipState",
-          JSON.stringify(skipData)
+          JSON.stringify(modalStatusDetails)
         );
 
         setOAuthModalState({
@@ -75,7 +75,7 @@ function useFederatedOauthModal() {
         // Hide for 1 hour after first skip
         const oneHourFromNow = Date.now() + 60 * 60 * 1000;
 
-        const skipData = {
+        const modalStatusDetails = {
           skipCount: newSkipCount,
           hideUntil: oneHourFromNow,
           permanentlyHidden: false,
@@ -83,7 +83,7 @@ function useFederatedOauthModal() {
 
         localStorage.setItem(
           "federatedModalSkipState",
-          JSON.stringify(skipData)
+          JSON.stringify(modalStatusDetails)
         );
 
         setOAuthModalState({

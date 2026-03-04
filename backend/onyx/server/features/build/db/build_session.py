@@ -439,26 +439,26 @@ def _is_port_available(port: int) -> bool:
 
     logger.debug(f"Checking if port {port} is available")
 
-    # Check IPv4 wildcard (0.0.0.0) - this will detect any IPv4 listener
+    # Check IPv4 localhost (127.0.0.1) - this will detect local interface availability
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            sock.bind(("0.0.0.0", port))
-            logger.debug(f"Port {port} IPv4 wildcard bind successful")
+            sock.bind(("127.0.0.1", port))
+            logger.debug(f"Port {port} IPv4 bind successful")
     except OSError as e:
-        logger.debug(f"Port {port} IPv4 wildcard not available: {e}")
+        logger.debug(f"Port {port} IPv4 not available: {e}")
         return False
 
-    # Check IPv6 wildcard (::) - this will detect any IPv6 listener
+    # Check IPv6 localhost (::1) - this will detect local interface availability
     try:
         with socket.socket(socket.AF_INET6, socket.SOCK_STREAM) as sock:
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             # IPV6_V6ONLY must be False to allow dual-stack behavior
             sock.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 0)
-            sock.bind(("::", port))
-            logger.debug(f"Port {port} IPv6 wildcard bind successful")
+            sock.bind(("::1", port))
+            logger.debug(f"Port {port} IPv6 bind successful")
     except OSError as e:
-        logger.debug(f"Port {port} IPv6 wildcard not available: {e}")
+        logger.debug(f"Port {port} IPv6 not available: {e}")
         return False
 
     logger.debug(f"Port {port} is available")

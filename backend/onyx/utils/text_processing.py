@@ -51,16 +51,13 @@ ESCAPE_SEQUENCE_RE = re.compile(
     re.UNICODE | re.VERBOSE,
 )
 
-_INITIAL_FILTER = re.compile(
-    "["
-    "\U0000fff0-\U0000ffff"  # Specials
-    "\U0001f000-\U0001f9ff"  # Emoticons
-    "\U00002000-\U0000206f"  # General Punctuation
-    "\U00002190-\U000021ff"  # Arrows
-    "\U00002700-\U000027bf"  # Dingbats
-    "]+",
-    flags=re.UNICODE,
-)
+_INITIAL_FILTER_MAP = {
+    **{i: None for i in range(0xFFF0, 0x10000)},
+    **{i: None for i in range(0x1F000, 0x1FA00)},
+    **{i: None for i in range(0x2000, 0x2070)},
+    **{i: None for i in range(0x2190, 0x2200)},
+    **{i: None for i in range(0x2700, 0x27C0)},
+}
 
 # Regex to match invalid Unicode characters that cause UTF-8 encoding errors:
 # - \x00-\x08: Control characters (except tab \x09)
@@ -69,9 +66,16 @@ _INITIAL_FILTER = re.compile(
 # - \ud800-\udfff: Surrogate pairs (invalid when unpaired, causes "surrogates not allowed" errors)
 # - \ufdd0-\ufdef: Non-characters
 # - \ufffe-\uffff: Non-characters
-_INVALID_UNICODE_CHARS_RE = re.compile(
-    "[\x00-\x08\x0b\x0c\x0e-\x1f\ud800-\udfff\ufdd0-\ufdef\ufffe\uffff]"
-)
+# Map of invalid Code Points for translation
+_INVALID_UNICODE_CHARS_MAP = {
+    **{i: None for i in range(0x00, 0x09)},
+    **{i: None for i in range(0x0B, 0x0D)},
+    **{i: None for i in range(0x0E, 0x20)},
+    **{i: None for i in range(0xD800, 0xE000)},
+    **{i: None for i in range(0xFDD0, 0xFDF0)},
+    0xFFFE: None,
+    0xFFFF: None,
+}
 
 
 def decode_escapes(s: str) -> str:
@@ -251,7 +255,7 @@ def shared_precompare_cleanup(text: str) -> str:
 
 def clean_text(text: str) -> str:
     # Remove specific Unicode ranges that might cause issues
-    cleaned = _INITIAL_FILTER.sub("", text)
+    cleaned = text.translate(_INITIAL_FILTER_MAP)
 
     # Remove any control characters except for newline and tab
     cleaned = "".join(ch for ch in cleaned if ch >= " " or ch in "\n\t")
@@ -286,7 +290,7 @@ def remove_invalid_unicode_chars(text: str) -> str:
     - Unpaired UTF-16 surrogates (e.g. \udc00) that cause 'surrogates not allowed' errors
     - Unicode non-characters
     """
-    return _INVALID_UNICODE_CHARS_RE.sub("", text)
+    return text.translate(_INVALID_UNICODE_CHARS_MAP)
 
 
 def normalize_char(c: str) -> str:

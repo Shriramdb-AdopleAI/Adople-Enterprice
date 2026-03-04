@@ -121,7 +121,7 @@ class DocumentManager:
             response.raise_for_status()
 
         print(
-            f"Seeding docs for api_key_id={api_key.api_key_id} completed successfully."
+            "Seeding docs for api_key_id=*** completed successfully."
         )
         return [
             SimpleTestDocument(
@@ -157,7 +157,7 @@ class DocumentManager:
         response.raise_for_status()
 
         print(
-            f"Seeding doc for api_key_id={api_key.api_key_id} completed successfully."
+            "Seeding doc for api_key_id=*** completed successfully."
         )
 
         return SimpleTestDocument(

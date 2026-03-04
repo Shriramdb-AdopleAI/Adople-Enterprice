@@ -1761,9 +1761,10 @@ def gmail_auth(
     response: Response, credential_id: int, _: User = Depends(current_user)
 ) -> AuthUrl:
     # set a cookie that we can read in the callback (used for `verify_csrf`)
+    cred_id_str = str(int(credential_id))
     response.set_cookie(
         key=_GMAIL_CREDENTIAL_ID_COOKIE_NAME,
-        value=str(credential_id),
+        value=cred_id_str,
         httponly=True,
         max_age=600,
     )
@@ -1775,9 +1776,10 @@ def google_drive_auth(
     response: Response, credential_id: int, _: User = Depends(current_user)
 ) -> AuthUrl:
     # set a cookie that we can read in the callback (used for `verify_csrf`)
+    cred_id_str = str(int(credential_id))
     response.set_cookie(
         key=_GOOGLE_DRIVE_CREDENTIAL_ID_COOKIE_NAME,
-        value=str(credential_id),
+        value=cred_id_str,
         httponly=True,
         max_age=600,
     )

@@ -151,7 +151,8 @@ class LocalSandboxManager(SandboxManager):
         """
         # Ensure ID doesn't contain path traversal components
         safe_id = str(sandbox_id)
-        if ".." in safe_id or "/" in safe_id or "\\" in safe_id:
+        import re
+        if not re.match(r"^[\w-]+$", safe_id):
             masked_id = f"{safe_id[:8]}..." if len(safe_id) > 8 else "***"
             logger.error(f"Malicious sandbox_id detected: {masked_id}")
             raise ValueError(f"Invalid sandbox_id: {safe_id}")
@@ -802,6 +803,8 @@ class LocalSandboxManager(SandboxManager):
         """
         session_path = self._get_session_path(sandbox_id, session_id)
         outputs_path = session_path.resolve() / "outputs"
+        if not outputs_path.resolve().is_relative_to(Path(SANDBOX_BASE_PATH).resolve()):
+            return False
         return outputs_path.exists()
 
     def ensure_nextjs_running(
