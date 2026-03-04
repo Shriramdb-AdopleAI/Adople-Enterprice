@@ -183,7 +183,7 @@
             j ||
               ("inline" === m
                 ? g
-                  ? (j = f(p(g) ? g.replace(/.*(?=#[^\s]+$)/, "") : g))
+                  ? (j = f(document).find(p(g) ? g.replace(/.*(?=#[^\s]+$)/, "") : g))
                   : k.isDom && (j = c)
                 : "html" === m
                   ? (j = g)
@@ -554,10 +554,11 @@
       );
     },
     _loadIframe: function () {
-      var a = b.coming,
-        d = f(a.tpl.iframe.replace(/\{rnd\}/g, new Date().getTime()))
-          .attr("scrolling", s ? "auto" : a.iframe.scrolling)
-          .attr("src", a.href);
+      var a = b.coming, dElem = document.createElement("iframe");
+      dElem.className = "fancybox-iframe";
+      var d = f(dElem)
+        .attr("scrolling", s ? "auto" : a.iframe.scrolling)
+        .attr("src", a.href);
       f(a.wrap).bind("onReset", function () {
         try {
           f(this)
@@ -1078,13 +1079,10 @@
         c = a.type;
       f.isFunction(e) && (e = e.call(d.element, d));
       if (p(e) && "" !== f.trim(e)) {
-        d = f(
-          '<div class="fancybox-title fancybox-title-' +
-          c +
-          '-wrap">' +
-          e +
-          "</div>",
-        );
+        var divTitle = document.createElement("div");
+        divTitle.className = "fancybox-title fancybox-title-" + c + "-wrap";
+        divTitle.textContent = e;
+        d = f(divTitle);
         switch (c) {
           case "inside":
             c = b.skin;

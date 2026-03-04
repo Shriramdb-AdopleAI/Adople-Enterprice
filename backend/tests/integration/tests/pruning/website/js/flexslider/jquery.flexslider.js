@@ -50,10 +50,7 @@
       }
       //Test for manualControls
       if (slider.vars.manualControls != "") {
-        slider.manualControls = $(
-          slider.vars.manualControls,
-          slider.containerExists ? slider.controlsContainer : slider,
-        );
+        slider.manualControls = $(document).find(slider.vars.manualControls);
         slider.manualExists = slider.manualControls.length > 0;
       }
 
@@ -135,22 +132,25 @@
         if (slider.manualExists) {
           slider.controlNav = slider.manualControls;
         } else {
-          var controlNavScaffold = $('<ol class="flex-control-nav"></ol>');
+          var olElem = document.createElement("ol");
+          olElem.className = "flex-control-nav";
+          var controlNavScaffold = $(olElem);
           var j = 1;
           for (var i = 0; i < slider.count; i++) {
-            controlNavScaffold.append("<li><a>" + j + "</a></li>");
+            var liElem = document.createElement("li");
+            var aElem = document.createElement("a");
+            aElem.textContent = j;
+            liElem.appendChild(aElem);
+            controlNavScaffold.append(liElem);
             j++;
           }
 
           if (slider.containerExists) {
             $(slider.controlsContainer).append(controlNavScaffold);
-            slider.controlNav = $(
-              ".flex-control-nav li a",
-              slider.controlsContainer,
-            );
+            slider.controlNav = $(slider.controlsContainer).find(".flex-control-nav li a");
           } else {
             slider.append(controlNavScaffold);
-            slider.controlNav = $(".flex-control-nav li a", slider);
+            slider.controlNav = slider.find(".flex-control-nav li a");
           }
         }
 
@@ -174,23 +174,26 @@
       //////////////////////////////////////////////////////////////////
       //FlexSlider: Direction Nav
       if (slider.vars.directionNav) {
-        var directionNavScaffold = $(
-          '<ul class="flex-direction-nav"><li><a class="prev" href="#">' +
-            slider.vars.prevText +
-            '</a></li><li><a class="next" href="#">' +
-            slider.vars.nextText +
-            "</a></li></ul>",
-        );
+        var ulElem = document.createElement("ul");
+        ulElem.className = "flex-direction-nav";
+        var prevLi = document.createElement("li");
+        var prevA = document.createElement("a");
+        prevA.className = "prev"; prevA.href = "#"; prevA.textContent = slider.vars.prevText;
+        prevLi.appendChild(prevA);
+        var nextLi = document.createElement("li");
+        var nextA = document.createElement("a");
+        nextA.className = "next"; nextA.href = "#"; nextA.textContent = slider.vars.nextText;
+        nextLi.appendChild(nextA);
+        ulElem.appendChild(prevLi);
+        ulElem.appendChild(nextLi);
+        var directionNavScaffold = $(ulElem);
 
         if (slider.containerExists) {
           $(slider.controlsContainer).append(directionNavScaffold);
-          slider.directionNav = $(
-            ".flex-direction-nav li a",
-            slider.controlsContainer,
-          );
+          slider.directionNav = $(slider.controlsContainer).find(".flex-direction-nav li a");
         } else {
           slider.append(directionNavScaffold);
-          slider.directionNav = $(".flex-direction-nav li a", slider);
+          slider.directionNav = slider.find(".flex-direction-nav li a");
         }
 
         //Set initial disable styles if necessary
@@ -249,8 +252,8 @@
           e.preventDefault();
           e = e ? e : window.event;
           var wheelData = e.detail
-              ? e.detail * -1
-              : e.originalEvent.wheelDelta / 40,
+            ? e.detail * -1
+            : e.originalEvent.wheelDelta / 40,
             target =
               wheelData < 0
                 ? slider.getTarget("next")
@@ -386,7 +389,7 @@
                 dx =
                   dx /
                   ((slider.currentSlide == 0 && dx < 0) ||
-                  (slider.currentSlide == slider.count - 1 && dx > 0)
+                    (slider.currentSlide == slider.count - 1 && dx > 0)
                     ? Math.abs(dx) / cwidth + 2
                     : 1);
               }
@@ -442,8 +445,8 @@
               slider.height(slider.slides.filter(":first").height());
               slider.args[slider.prop] =
                 -1 *
-                  (slider.currentSlide + slider.cloneOffset) *
-                  slider.slides.filter(":first").height() +
+                (slider.currentSlide + slider.cloneOffset) *
+                slider.slides.filter(":first").height() +
                 "px";
               if (slider.transitions) {
                 slider.setTransition(0);
@@ -456,8 +459,8 @@
               slider.newSlides.width(slider.width());
               slider.args[slider.prop] =
                 -1 *
-                  (slider.currentSlide + slider.cloneOffset) *
-                  slider.width() +
+                (slider.currentSlide + slider.cloneOffset) *
+                slider.width() +
                 "px";
               if (slider.transitions) {
                 slider.setTransition(0);
@@ -719,10 +722,10 @@
     touch: true, //Boolean: Disable touchswipe events
     controlsContainer: "", //Selector: Declare which container the navigation elements should be appended too. Default container is the flexSlider element. Example use would be ".flexslider-container", "#container", etc. If the given element is not found, the default action will be taken.
     manualControls: "", //Selector: Declare custom control navigation. Example would be ".flex-control-nav li" or "#tabs-nav li img", etc. The number of elements in your controlNav should match the number of slides/tabs.
-    start: function () {}, //Callback: function(slider) - Fires when the slider loads the first slide
-    before: function () {}, //Callback: function(slider) - Fires asynchronously with each slider animation
-    after: function () {}, //Callback: function(slider) - Fires after each slider animation completes
-    end: function () {}, //Callback: function(slider) - Fires when the slider reaches the last slide (asynchronous)
+    start: function () { }, //Callback: function(slider) - Fires when the slider loads the first slide
+    before: function () { }, //Callback: function(slider) - Fires asynchronously with each slider animation
+    after: function () { }, //Callback: function(slider) - Fires after each slider animation completes
+    end: function () { }, //Callback: function(slider) - Fires when the slider reaches the last slide (asynchronous)
   };
 
   //FlexSlider: Plugin Function

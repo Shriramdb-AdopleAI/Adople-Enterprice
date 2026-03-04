@@ -41,11 +41,11 @@
           0,
           vars.selector.search(" "),
         );
-        slider.slides = $(vars.selector, slider);
-        slider.container = $(slider.containerSelector, slider);
+        slider.slides = slider.find(vars.selector);
+        slider.container = slider.find(slider.containerSelector);
         slider.count = slider.slides.length;
         // SYNC:
-        slider.syncExists = $(vars.sync).length > 0;
+        slider.syncExists = $(document).find(vars.sync).length > 0;
         // SLIDE:
         if (vars.animation === "slide") vars.animation = "swing";
         slider.prop = vertical ? "top" : "marginLeft";
@@ -78,11 +78,11 @@
         // CONTROLSCONTAINER:
         if (vars.controlsContainer !== "")
           slider.controlsContainer =
-            $(vars.controlsContainer).length > 0 && $(vars.controlsContainer);
+            $(document).find(vars.controlsContainer).length > 0 && $(document).find(vars.controlsContainer);
         // MANUAL:
         if (vars.manualControls !== "")
           slider.manualControls =
-            $(vars.manualControls).length > 0 && $(vars.manualControls);
+            $(document).find(vars.manualControls).length > 0 && $(document).find(vars.manualControls);
 
         // RANDOMIZE:
         if (vars.randomize) {
@@ -109,7 +109,7 @@
         // KEYBOARD:
         if (
           vars.keyboard &&
-          ($(slider.containerSelector).length === 1 || vars.multipleKeyboard)
+          ($(document).find(slider.containerSelector).length === 1 || vars.multipleKeyboard)
         ) {
           $(document).bind("keyup", function (event) {
             var keycode = event.keyCode;
@@ -181,7 +181,7 @@
             var $slide = $(this),
               target = $slide.index();
             if (
-              !$(vars.asNavFor).data("flexslider").animating &&
+              !$(document).find(vars.asNavFor).data("flexslider").animating &&
               !$slide.hasClass("active")
             ) {
               slider.direction = slider.currentItem < target ? "next" : "prev";
@@ -213,10 +213,11 @@
 
           if (slider.pagingCount > 1) {
             for (var i = 0; i < slider.pagingCount; i++) {
-              var $li = $('<li></li>');
+              var liEl = document.createElement('li');
+              var $li = $(liEl);
               if (vars.controlNav === "thumbnails") {
                 var img = document.createElement('img');
-                img.src = slider.slides.eq(i).attr("data-thumb");
+                img.setAttribute("src", slider.slides.eq(i).attr("data-thumb"));
                 $li.append(img);
               } else {
                 var btn = document.createElement('a');
@@ -590,7 +591,7 @@
         }
       },
       sync: function (action) {
-        var $obj = $(vars.sync).data("flexslider"),
+        var $obj = $(document).find(vars.sync).data("flexslider"),
           target = slider.animatingTo;
 
         switch (action) {
@@ -620,7 +621,7 @@
         slider.is(":visible")
       ) {
         if (asNav && withSync) {
-          var master = $(vars.asNavFor).data("flexslider");
+          var master = $(document).find(vars.asNavFor).data("flexslider");
           slider.atEnd = target === 0 || target === slider.count - 1;
           master.flexAnimate(target, true, false, true, fromNav);
           slider.direction = slider.currentItem < target ? "next" : "prev";
@@ -958,7 +959,7 @@
             .append(slider.slides.first().clone().addClass("clone"))
             .prepend(slider.slides.last().clone().addClass("clone"));
         }
-        slider.newSlides = $(vars.selector, slider);
+        slider.newSlides = slider.find(vars.selector);
 
         sliderOffset = reverse
           ? slider.count - 1 - slider.currentSlide + slider.cloneOffset
@@ -1141,7 +1142,7 @@
       slider.update(pos, "add");
 
       // update slider.slides
-      slider.slides = $(vars.selector + ":not(.clone)", slider);
+      slider.slides = slider.find(vars.selector + ":not(.clone)");
       // re-setup the slider to accomdate new slide
       slider.setup();
 
@@ -1169,7 +1170,7 @@
       slider.update(pos, "remove");
 
       // update slider.slides
-      slider.slides = $(vars.selector + ":not(.clone)", slider);
+      slider.slides = slider.find(vars.selector + ":not(.clone)");
       // re-setup the slider to accomdate new slide
       slider.setup();
 
