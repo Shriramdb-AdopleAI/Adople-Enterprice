@@ -207,7 +207,9 @@
             j = 1,
             item;
 
-          slider.controlNavScaffold = $('<ol class="' + namespace + 'control-nav ' + namespace + type + '"></ol>');
+          var olElem = document.createElement("ol");
+          olElem.className = namespace + "control-nav " + namespace + type;
+          slider.controlNavScaffold = $(olElem);
 
           if (slider.pagingCount > 1) {
             for (var i = 0; i < slider.pagingCount; i++) {
@@ -298,9 +300,11 @@
         },
         update: function (action, pos) {
           if (slider.pagingCount > 1 && action === "add") {
-            slider.controlNavScaffold.append(
-              $("<li><a>" + slider.count + "</a></li>"),
-            );
+            var navLi = document.createElement('li');
+            var navA = document.createElement('a');
+            navA.textContent = slider.count;
+            navLi.appendChild(navA);
+            slider.controlNavScaffold.append(navLi);
           } else if (slider.pagingCount === 1) {
             slider.controlNavScaffold.find("li").remove();
           } else {
@@ -315,11 +319,24 @@
       },
       directionNav: {
         setup: function () {
-          var directionNavScaffold = $('<ul class="' + namespace + 'direction-nav"></ul>');
-          var prevLi = $('<li></li>');
-          prevLi.append($('<a class="' + namespace + 'prev" href="#"></a>').text(vars.prevText));
-          var nextLi = $('<li></li>');
-          nextLi.append($('<a class="' + namespace + 'next" href="#"></a>').text(vars.nextText));
+          var ulElem = document.createElement("ul");
+          ulElem.className = namespace + "direction-nav";
+          var directionNavScaffold = $(ulElem);
+
+          var prevLi = document.createElement("li");
+          var prevA = document.createElement("a");
+          prevA.className = namespace + "prev";
+          prevA.href = "#";
+          prevA.textContent = vars.prevText;
+          prevLi.appendChild(prevA);
+
+          var nextLi = document.createElement("li");
+          var nextA = document.createElement("a");
+          nextA.className = namespace + "next";
+          nextA.href = "#";
+          nextA.textContent = vars.nextText;
+          nextLi.appendChild(nextA);
+
           directionNavScaffold.append(prevLi).append(nextLi);
 
           // CONTROLSCONTAINER:

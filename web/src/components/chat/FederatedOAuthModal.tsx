@@ -29,7 +29,7 @@ function useFederatedOauthModal() {
     skipCount: number;
   }>(() => {
     if (typeof window !== "undefined") {
-      const skipData = localStorage.getItem("federatedModalSkipState");
+      const skipData = localStorage.getItem("ui_announcement_dismissal");
       if (skipData) {
         try {
           const parsed = JSON.parse(skipData);
@@ -63,7 +63,7 @@ function useFederatedOauthModal() {
         };
 
         localStorage.setItem(
-          "federatedModalSkipState",
+          "ui_announcement_dismissal",
           JSON.stringify(modalStatusDetails)
         );
 
@@ -82,7 +82,7 @@ function useFederatedOauthModal() {
         };
 
         localStorage.setItem(
-          "federatedModalSkipState",
+          "ui_announcement_dismissal",
           JSON.stringify(modalStatusDetails)
         );
 

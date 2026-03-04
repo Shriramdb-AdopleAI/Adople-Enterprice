@@ -999,7 +999,9 @@
     create: function (a) {
       a = f.extend({}, this.defaults, a);
       this.overlay && this.close();
-      this.overlay = f('<div class="fancybox-overlay"></div>').appendTo("body");
+      var divOverlay = document.createElement("div");
+      divOverlay.className = "fancybox-overlay";
+      this.overlay = f(divOverlay).appendTo("body");
       this.fixed = !1;
       a.fixed &&
         b.defaults.fixed &&

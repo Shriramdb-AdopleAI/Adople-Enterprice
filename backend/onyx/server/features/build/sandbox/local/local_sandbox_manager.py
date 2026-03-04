@@ -150,12 +150,11 @@ class LocalSandboxManager(SandboxManager):
             Path to the sandbox directory
         """
         # Ensure ID doesn't contain path traversal components
-        safe_id = str(sandbox_id)
-        import re
-        if not re.match(r"^[\w-]+$", safe_id):
-            masked_id = f"{safe_id[:8]}..." if len(safe_id) > 8 else "***"
-            logger.error(f"Malicious sandbox_id detected: {masked_id}")
-            raise ValueError(f"Invalid sandbox_id: {safe_id}")
+        import uuid
+        try:
+            safe_id = str(uuid.UUID(str(sandbox_id)))
+        except Exception:
+            raise ValueError(f"Invalid sandbox_id: {sandbox_id}")
 
         sandbox_path = Path(SANDBOX_BASE_PATH) / safe_id
         # Use resolve to flatten and check path
@@ -174,12 +173,11 @@ class LocalSandboxManager(SandboxManager):
             Path to the session workspace directory (sessions/$session_id/)
         """
         # Ensure session_id doesn't contain path traversal components
-        safe_session_id = str(session_id)
-        import re
-        if not re.match(r"^[\w-]+$", safe_session_id):
-            masked_session_id = f"{safe_session_id[:8]}..." if len(safe_session_id) > 8 else "***"
-            logger.error(f"Malicious session_id detected: {masked_session_id}")
-            raise ValueError(f"Invalid session_id: {safe_session_id}")
+        import uuid
+        try:
+            safe_session_id = str(uuid.UUID(str(session_id)))
+        except Exception:
+            raise ValueError(f"Invalid session_id: {session_id}")
 
         session_path = self._get_sandbox_path(sandbox_id) / "sessions" / safe_session_id
         # Use resolve to flatten and check path
@@ -801,7 +799,14 @@ class LocalSandboxManager(SandboxManager):
         Returns:
             True if the session workspace exists, False otherwise
         """
-        session_path = self._get_session_path(sandbox_id, session_id)
+        import uuid
+        try:
+            safe_session = str(uuid.UUID(str(session_id)))
+            safe_sandbox = str(uuid.UUID(str(sandbox_id)))
+        except Exception:
+            return False
+            
+        session_path = self._get_session_path(safe_sandbox, safe_session)
         outputs_path = session_path.resolve() / "outputs"
         if not outputs_path.resolve().is_relative_to(Path(SANDBOX_BASE_PATH).resolve()):
             return False
