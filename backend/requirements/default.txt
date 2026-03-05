@@ -95,7 +95,7 @@ boto3==1.39.11
     #   onyx
 boto3-stubs==1.39.11
     # via onyx
-botocore==1.39.11
+botocore==1.42.57
     # via
     #   aiobotocore
     #   boto3
