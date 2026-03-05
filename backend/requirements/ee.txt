@@ -121,7 +121,7 @@ google-auth==2.48.0
     #   google-cloud-storage
     #   google-genai
     #   kubernetes
-google-cloud-aiplatform==1.133.0
+google-cloud-aiplatform==1.140.0
     # via onyx
 google-cloud-bigquery==3.38.0
     # via google-cloud-aiplatform
