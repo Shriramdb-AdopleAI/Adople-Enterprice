@@ -324,7 +324,7 @@ google-auth-httplib2==0.1.0
     #   onyx
 google-auth-oauthlib==1.0.0
     # via onyx
-google-cloud-aiplatform==1.133.0
+google-cloud-aiplatform==1.140.0
     # via onyx
 google-cloud-bigquery==3.38.0
     # via google-cloud-aiplatform
@@ -595,7 +595,7 @@ mypy-extensions==1.0.0
     #   typing-inspect
 nest-asyncio==1.6.0
     # via onyx
-nltk==3.9.1
+nltk==3.9.3
     # via unstructured
 numpy==2.4.1
     # via
@@ -662,7 +662,7 @@ opentelemetry-sdk==1.39.1
     #   opentelemetry-exporter-otlp-proto-http
 opentelemetry-semantic-conventions==0.60b1
     # via opentelemetry-sdk
-orjson==3.11.4 ; platform_python_implementation != 'PyPy'
+orjson==3.11.5 ; platform_python_implementation != 'PyPy'
     # via langsmith
 packaging==24.2
     # via
