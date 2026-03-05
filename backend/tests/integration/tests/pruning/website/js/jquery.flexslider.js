@@ -217,8 +217,15 @@
               if (vars.controlNav === "thumbnails") {
                 var img = document.createElement('img');
                 var thumbVal = String(slider.slides.eq(i).attr("data-thumb") || "");
-                if (thumbVal.toLowerCase().indexOf("javascript:") !== 0) {
-                  img.src = thumbVal;
+                try {
+                  // Validate URL scheme to avoid javascript: or other dangerous protocols
+                  var parsed = new URL(thumbVal, window.location.href);
+                  var scheme = parsed.protocol.toLowerCase();
+                  if (scheme === "http:" || scheme === "https:") {
+                    img.src = parsed.href;
+                  }
+                } catch (e) {
+                  // Ignore invalid URLs
                 }
                 liEl.appendChild(img);
               } else {
