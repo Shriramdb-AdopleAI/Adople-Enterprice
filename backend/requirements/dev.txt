@@ -633,7 +633,7 @@ uvicorn==0.35.0
     # via
     #   mcp
     #   onyx
-virtualenv==20.36.1
+virtualenv==20.39.0
     # via pre-commit
 voyageai==0.2.3
     # via onyx
