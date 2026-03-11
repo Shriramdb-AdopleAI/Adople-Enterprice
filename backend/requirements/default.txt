@@ -65,7 +65,7 @@ attrs==25.4.0
     #   jsonschema
     #   referencing
     #   zeep
-authlib==1.6.6
+authlib==1.6.7
     # via fastmcp
 babel==2.17.0
     # via courlan
@@ -595,7 +595,7 @@ mypy-extensions==1.0.0
     #   typing-inspect
 nest-asyncio==1.6.0
     # via onyx
-nltk==3.9.1
+nltk==3.9.3
     # via unstructured
 numpy==2.4.1
     # via
@@ -662,7 +662,7 @@ opentelemetry-sdk==1.39.1
     #   opentelemetry-exporter-otlp-proto-http
 opentelemetry-semantic-conventions==0.60b1
     # via opentelemetry-sdk
-orjson==3.11.4 ; platform_python_implementation != 'PyPy'
+orjson==3.11.5 ; platform_python_implementation != 'PyPy'
     # via langsmith
 packaging==24.2
     # via
@@ -808,7 +808,7 @@ pypandoc-binary==1.16.2
     # via onyx
 pyparsing==3.2.5
     # via httplib2
-pypdf==6.7.5
+pypdf==6.8.0
     # via
     #   onyx
     #   unstructured-client
