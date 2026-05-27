@@ -491,7 +491,7 @@ justext==3.0.2
     # via trafilatura
 keyring==25.7.0
     # via py-key-value-aio
-kombu==5.5.4
+kombu==5.6.2
     # via celery
 kubernetes==31.0.0
     # via onyx
