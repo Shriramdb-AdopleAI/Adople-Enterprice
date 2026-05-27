@@ -475,7 +475,7 @@ tenacity==9.1.2
     #   voyageai
 threadpoolctl==3.6.0
     # via scikit-learn
-tiktoken==0.7.0
+tiktoken==0.13.0
     # via litellm
 tokenizers==0.21.4
     # via
