@@ -14,7 +14,7 @@ aiofiles==25.1.0
     #   unstructured-client
 aiohappyeyeballs==2.6.1
     # via aiohttp
-aiohttp==3.13.3
+aiohttp==3.14.0
     # via
     #   aiobotocore
     #   discord-py
@@ -65,7 +65,7 @@ attrs==25.4.0
     #   jsonschema
     #   referencing
     #   zeep
-authlib==1.6.6
+authlib==1.6.12
     # via fastmcp
 babel==2.17.0
     # via courlan
@@ -422,7 +422,7 @@ humanfriendly==10.0
     # via coloredlogs
 hyperframe==6.1.0
     # via h2
-idna==3.11
+idna==3.15
     # via
     #   anyio
     #   email-validator
@@ -495,25 +495,25 @@ kombu==5.5.4
     # via celery
 kubernetes==31.0.0
     # via onyx
-langchain-core==1.2.11
+langchain-core==1.3.3
     # via onyx
 langdetect==1.0.9
     # via unstructured
 langfuse==3.10.0
     # via onyx
-langsmith==0.3.45
+langsmith==0.8.0
     # via langchain-core
 lazy-imports==1.0.1
     # via onyx
 legacy-cgi==2.6.4 ; python_full_version >= '3.13'
     # via ddtrace
-litellm==1.81.6
+litellm==1.83.7
     # via onyx
 locket==1.0.0
     # via
     #   distributed
     #   partd
-lxml==5.3.0
+lxml==6.1.0
     # via
     #   htmldate
     #   justext
@@ -561,7 +561,7 @@ mcp==1.26.0
     #   onyx
 mdurl==0.1.2
     # via markdown-it-py
-mistune==3.2.0
+mistune==3.2.1
     # via onyx
 more-itertools==10.8.0
     # via
@@ -595,7 +595,7 @@ mypy-extensions==1.0.0
     #   typing-inspect
 nest-asyncio==1.6.0
     # via onyx
-nltk==3.9.1
+nltk==3.9.4
     # via unstructured
 numpy==2.4.1
     # via
@@ -693,7 +693,7 @@ pathable==0.4.4
     # via jsonschema-path
 pdfminer-six==20251107
     # via markitdown
-pillow==12.1.1
+pillow==12.2.0
     # via python-pptx
 platformdirs==4.5.0
     # via
@@ -808,7 +808,7 @@ pypandoc-binary==1.16.2
     # via onyx
 pyparsing==3.2.5
     # via httplib2
-pypdf==6.7.5
+pypdf==6.10.2
     # via
     #   onyx
     #   unstructured-client
@@ -843,7 +843,7 @@ python-dateutil==2.8.2
     #   pandas
 python-docx==1.1.2
     # via onyx
-python-dotenv==1.1.1
+python-dotenv==1.2.2
     # via
     #   braintrust
     #   fastmcp
@@ -860,7 +860,7 @@ python-iso639==2025.11.16
     # via unstructured
 python-magic==0.4.27
     # via unstructured
-python-multipart==0.0.22
+python-multipart==0.0.27
     # via
     #   fastapi-users
     #   mcp
@@ -1171,7 +1171,7 @@ unstructured-client==0.42.6
     #   unstructured
 uritemplate==4.2.0
     # via google-api-python-client
-urllib3==2.6.3
+urllib3==2.7.0
     # via
     #   asana
     #   botocore
