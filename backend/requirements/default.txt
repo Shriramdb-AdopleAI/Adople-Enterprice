@@ -1048,7 +1048,7 @@ starlette==0.49.3
     #   prometheus-fastapi-instrumentator
 stone==3.3.1
     # via dropbox
-stripe==10.12.0
+stripe==15.5.0
     # via onyx
 supervisor==4.3.0
     # via onyx
